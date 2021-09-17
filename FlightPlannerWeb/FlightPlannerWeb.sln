@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlannerWeb", "FlightPlannerWeb\FlightPlannerWeb.csproj", "{CF1EA921-4ACA-4236-A323-364990045000}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF1EA921-4ACA-4236-A323-364990045000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF1EA921-4ACA-4236-A323-364990045000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF1EA921-4ACA-4236-A323-364990045000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF1EA921-4ACA-4236-A323-364990045000}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A1F321D-F4A6-4213-9532-B29F6C2FC50C}
+	EndGlobalSection
+EndGlobal
