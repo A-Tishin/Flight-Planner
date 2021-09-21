@@ -8,7 +8,6 @@ namespace FlightPlannerWeb.Storage
 {
     public class FlightStorage
     {
-        private static int _id = 0;
         private static readonly object _locker = new ();
 
         public static bool IsUnique(Flight flight, List<Flight> FlightList)
