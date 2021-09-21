@@ -10,6 +10,8 @@ namespace FlightPlannerWeb.Models
 {
     public class Airport
     {
+        [JsonIgnore]
+        public int Id { get; set; }
         [Required]
         public string Country { get; set; }
         [Required]

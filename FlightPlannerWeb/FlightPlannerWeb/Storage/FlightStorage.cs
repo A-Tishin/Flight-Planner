@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlightPlannerWeb.DbContext;
 using FlightPlannerWeb.Models;
 
 namespace FlightPlannerWeb.Storage
@@ -8,25 +9,14 @@ namespace FlightPlannerWeb.Storage
     public class FlightStorage
     {
         private static int _id = 0;
-        private static List<Flight> _flights = new List<Flight>();
         private static readonly object _locker = new ();
 
-        public static Flight GetById(int id)
-        {
-            return _flights.FirstOrDefault(f => f.Id == id);
-        }
-
-        public static void Clear()
-        {
-            _flights.Clear();
-        }
-
-        public static bool IsUnique(Flight flight)
+        public static bool IsUnique(Flight flight, List<Flight> FlightList)
         {
             bool isUnique = true;
             lock (_locker)
             {
-                foreach (var t in _flights)
+                foreach (var t in FlightList)
                 {
                     if (t.DepartureTime == flight.DepartureTime &&
                         t.ArrivalTime == flight.ArrivalTime &&
@@ -52,29 +42,10 @@ namespace FlightPlannerWeb.Storage
             return isValidData;
         }
 
-        public static Flight AddFlight(Flight flight)
-        {
-            lock (_locker)
-            {
-                flight.Id = ++_id;
-                _flights.Add(flight);
-                return flight;
-            }
-        }
-
-        public static void DeleteFlight(int id)
-        {
-            lock (_locker)
-            {
-                var flight = _flights.FirstOrDefault(f => f.Id == id);
-                _flights.Remove(flight);
-            }
-        }
-
-        public static List<Airport> SearchAirport(string keyword)
+        public static List<Airport> SearchAirport(string keyword, List<Flight> FlightList)
         {
             List<Airport> airList = new List<Airport>();
-            foreach (Flight flights in _flights)
+            foreach (Flight flights in FlightList)
             {
                 if (flights.From.City.ToLower().Contains(keyword.ToLower().Trim()) ||
                     flights.From.Country.ToLower().Contains(keyword.ToLower().Trim()) ||
@@ -91,10 +62,10 @@ namespace FlightPlannerWeb.Storage
             return airList;
         }
 
-        public static PageResult SearchFlight(SearchFlight data)
+        public static PageResult SearchFlight(SearchFlight data, List<Flight> FlightList)
         {
             PageResult page = new PageResult();
-            foreach (Flight f in _flights)
+            foreach (Flight f in FlightList)
             {
                 if (data.From == f.From.AirportCode &&
                     data.To == f.To.AirportCode)

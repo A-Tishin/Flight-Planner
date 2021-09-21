@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FlightPlannerWeb.API;
+using FlightPlannerWeb.DbContext;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightPlannerWeb
 {
@@ -33,6 +35,8 @@ namespace FlightPlannerWeb
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FlightPlannerWeb", Version = "v1" });
             });
+            services.AddDbContext<FlightPlannerDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("flight-planner")));
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
