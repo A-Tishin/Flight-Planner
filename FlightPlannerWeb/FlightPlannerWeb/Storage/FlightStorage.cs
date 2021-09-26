@@ -6,7 +6,7 @@ using FlightPlannerWeb.Models;
 
 namespace FlightPlannerWeb.Storage
 {
-    public class FlightStorage
+    public static class FlightStorage
     {
         private static readonly object _locker = new ();
 
@@ -32,13 +32,16 @@ namespace FlightPlannerWeb.Storage
 
         public static bool CheckDestination(Flight flight)
         {
-            DateTime depart = Convert.ToDateTime(flight.DepartureTime);
-            DateTime arrival = Convert.ToDateTime(flight.ArrivalTime);
-            var timeSpan = depart.Subtract(arrival).TotalSeconds;
-            bool isValidData = flight.From.AirportCode.ToLower().Trim() == flight.To.AirportCode.ToLower().Trim() ||
-                               flight.DepartureTime == flight.ArrivalTime || timeSpan > 0;
+            lock (_locker)
+            {
+                DateTime depart = Convert.ToDateTime(flight.DepartureTime);
+                DateTime arrival = Convert.ToDateTime(flight.ArrivalTime);
+                var timeSpan = depart.Subtract(arrival).TotalSeconds;
+                bool isValidData = flight.From.AirportCode.ToLower().Trim() == flight.To.AirportCode.ToLower().Trim() ||
+                                   flight.DepartureTime == flight.ArrivalTime || timeSpan > 0;
 
-            return isValidData;
+                return isValidData;
+            }
         }
 
         public static List<Airport> SearchAirport(string keyword, List<Flight> FlightList)
@@ -63,20 +66,24 @@ namespace FlightPlannerWeb.Storage
 
         public static PageResult SearchFlight(SearchFlight data, List<Flight> FlightList)
         {
-            PageResult page = new PageResult();
-            foreach (Flight f in FlightList)
+            lock (_locker)
             {
-                if (data.From == f.From.AirportCode &&
-                    data.To == f.To.AirportCode)
+                PageResult page = new PageResult(0, 0, new List<Flight>());
+                foreach (Flight f in FlightList)
                 {
-                    page.Items.Add(f);
-                    page.Page = page.Items.Count;
-                    page.TotalItems = page.Items.Count;
-                    return page;
+                    var depDate = f.DepartureTime.Substring(0, 10);
+                    if (data.From == f.From.AirportCode &&
+                        data.To == f.To.AirportCode &&
+                        data.DepartureDate == depDate)
+                    {
+                        page.Items.Add(f);
+                        page.Page++;
+                    }
                 }
-            }
 
-            return page;
+                page.TotalItems = page.Items.Count;
+                return page;
+            }
         }
     }
 }

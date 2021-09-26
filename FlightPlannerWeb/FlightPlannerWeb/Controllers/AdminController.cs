@@ -18,6 +18,8 @@ namespace FlightPlannerWeb.Controllers
     public class AdminController : ControllerBase
     {
         private readonly FlightPlannerDbContext _context;
+        private static readonly object _locker = new();
+
         public AdminController(FlightPlannerDbContext context)
         {
             _context = context;
@@ -44,24 +46,27 @@ namespace FlightPlannerWeb.Controllers
         [Route("flights")]
         public IActionResult PutFlight(Flight flight)
         {
-            List<Flight> flightList = _context.Flights
-                .Include(f => f.From)
-                .Include(f => f.To)
-                .ToList();
-
-            if (!ModelState.IsValid || FlightStorage.CheckDestination(flight))
+            lock (_locker)
             {
-                return BadRequest();
-            }
+                List<Flight> flightList = _context.Flights
+                    .Include(f => f.From)
+                    .Include(f => f.To)
+                    .ToList();
 
-            if (FlightStorage.IsUnique(flight, flightList))
-            {
-                _context.Flights.Add(flight);
-                _context.SaveChanges();
-                return Created("", flight);
-            }
+                if (!ModelState.IsValid || FlightStorage.CheckDestination(flight))
+                {
+                    return BadRequest();
+                }
 
-            return Conflict();
+                if (FlightStorage.IsUnique(flight, flightList))
+                {
+                    _context.Flights.Add(flight);
+                    _context.SaveChanges();
+                    return Created("", flight);
+                }
+
+                return Conflict();
+            }
         }
 
         [HttpDelete]
