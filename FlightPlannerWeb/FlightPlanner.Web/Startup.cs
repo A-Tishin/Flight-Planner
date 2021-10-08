@@ -53,6 +53,7 @@ namespace FlightPlanner.Web
             services.AddScoped<IValidator, TimeFrameValidator>();
             services.AddScoped<IValidator, AirportCodesEqualityValidator>();
             services.AddScoped<ISearchValidator, SearchValidator>();
+            services.AddScoped<IAirportService, AirportService>();
 
             var cfg = AutoMapperConfig.GetConfig();
             services.AddSingleton(typeof(IMapper), cfg);

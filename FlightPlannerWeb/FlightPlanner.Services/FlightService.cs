@@ -66,24 +66,5 @@ namespace FlightPlanner.Services
             page.TotalItems = page.Items.Count;
             return page;
         }
-
-        public List<Airport> SearchAirport(string keyword)
-        {
-            List<Airport> response = new List<Airport>();
-            foreach (Airport airport in _context.Airports)
-            {
-                if (airport.City.ToLower().Contains(keyword.ToLower().Trim()) ||
-                    airport.Country.ToLower().Contains(keyword.ToLower().Trim()) ||
-                    airport.AirportCode.ToLower().Contains(keyword.ToLower().Trim()) ||
-                    airport.City.ToLower().Contains(keyword.ToLower().Trim()) ||
-                    airport.Country.ToLower().Contains(keyword.ToLower().Trim()) ||
-                    airport.AirportCode.ToLower().Contains(keyword.ToLower().Trim()))
-                {
-                    response.Add(airport);
-                }
-            }
-
-            return response;
-        }
     }
 }

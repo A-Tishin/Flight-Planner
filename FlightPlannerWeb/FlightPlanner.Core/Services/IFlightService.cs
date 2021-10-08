@@ -9,6 +9,5 @@ namespace FlightPlanner.Core.Services
         void DeleteFlight(int id);
         bool Exists(Flight flight);
         PageResult SearchFlight(SearchFlight data);
-        List<Airport> SearchAirport(string keyword);
     }
 }

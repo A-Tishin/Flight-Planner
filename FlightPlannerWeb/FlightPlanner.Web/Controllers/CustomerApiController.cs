@@ -14,9 +14,12 @@ namespace FlightPlanner.Web.Controllers
         private readonly IFlightService _flightService;
         private readonly IMapper _mapper;
         private readonly ISearchValidator _searchValidator;
+        private readonly IAirportService _airportService;
 
-        public CustomerApiController(ISearchValidator searchValidator, IFlightService flightService, IMapper mapper)
+        public CustomerApiController(IAirportService airportService,
+            ISearchValidator searchValidator, IFlightService flightService, IMapper mapper)
         {
+            _airportService = airportService;
             _searchValidator = searchValidator;
             _flightService = flightService;
             _mapper = mapper;
@@ -52,7 +55,7 @@ namespace FlightPlanner.Web.Controllers
         [Route("airports")]
         public IActionResult SearchAirports(string search)
         {
-            return Ok(_mapper.Map<AirportResponse[]>(_flightService.SearchAirport(search)));
+            return Ok(_mapper.Map<AirportResponse[]>(_airportService.SearchAirport(search)));
         }
     }
 }
