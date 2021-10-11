@@ -9,7 +9,6 @@ namespace FlightPlanner.Services
     public class DbService: IDbService
     {
         protected readonly IFlightDbContext _context;
-
         public DbService(IFlightDbContext context)
         {
             _context = context;

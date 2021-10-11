@@ -8,8 +8,7 @@ namespace FlightPlanner.Services
     public class EntityService<T>: DbService, IEntityService<T> where T: Entity
     {
         public EntityService(IFlightDbContext context) : base(context)
-        {
-        }
+        { }
 
         public IQueryable<T> Query()
         {

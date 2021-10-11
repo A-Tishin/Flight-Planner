@@ -10,8 +10,7 @@ namespace FlightPlanner.Services
     public class FlightService: EntityService<Flight>, IFlightService
     {
         public FlightService(IFlightDbContext context) : base(context)
-        {
-        }
+        { }
 
         public Flight GetFlightById(int id)
         {

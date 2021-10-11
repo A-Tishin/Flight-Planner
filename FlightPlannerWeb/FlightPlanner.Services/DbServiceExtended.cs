@@ -7,8 +7,7 @@ namespace FlightPlanner.Services
     public class DbServiceExtended: DbService, IDbServiceExtended
     {
         public DbServiceExtended(IFlightDbContext context) : base(context)
-        {
-        }
+        { }
 
         public void DeleteAll<T>() where T : Entity
         {

@@ -8,8 +8,7 @@ namespace FlightPlanner.Services
     public class AirportService : EntityService<Airport>, IAirportService
     {
         public AirportService(IFlightDbContext context) : base(context)
-        {
-        }
+        { }
 
         public List<Airport> SearchAirport(string keyword)
         {
